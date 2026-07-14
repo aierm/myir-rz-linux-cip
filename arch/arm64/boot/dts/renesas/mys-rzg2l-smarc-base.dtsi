@@ -1,0 +1,107 @@
+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+/*
+ * Device Tree Source for the MYiR MYS-RZG2L board
+ *
+ * This OpenWrt-oriented base keeps the Renesas 6.12 SMARC support as the
+ * baseline and only carries the board-specific bits needed for networking,
+ * storage, and USB.
+ */
+
+/dts-v1/;
+
+#define PMOD1_SER0	0
+#define PMOD_MTU3	0
+#define MTU3_COUNTER_Z_PHASE_SIGNAL	0
+#define POEGD_SUPPORT	0
+#define POE3_SUPPORT	0
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/rzg2l-pinctrl.h>
+
+#include "r9a07g044l2.dtsi"
+#include "rzg2l-smarc-som.dtsi"
+#include "rzg2l-smarc-pinfunction.dtsi"
+#include "rz-smarc-common.dtsi"
+#include "rzg2l-smarc.dtsi"
+
+&{/chosen} {
+	/delete-property/ bootargs;
+	stdout-path = "serial0:115200n8";
+};
+
+/ {
+	wifi_reg_on: regulator-wifi-reg-on {
+		compatible = "regulator-fixed";
+		regulator-name = "wl_reg_on";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpios = <&pinctrl RZG2L_GPIO(9, 0) GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+};
+
+/*
+ * The MYiR board uses different PHY addresses than the Renesas EVK.
+ * Leave PHY IRQs unset for now so the PHY framework can poll the link state.
+ */
+&phy0 {
+	reg = <4>;
+	/delete-property/ interrupts-extended;
+};
+
+&phy1 {
+	reg = <6>;
+	/delete-property/ interrupts-extended;
+};
+
+/*
+ * The vendor tree configures the eMMC pins at 3.3V on this board, unlike
+ * the EVK defaults in the upstream SMARC support.
+ */
+&sdhi0_emmc_pins {
+	sd0_emmc_data {
+		power-source = <3300>;
+	};
+
+	sd0_emmc_ctrl {
+		power-source = <3300>;
+	};
+
+	sd0_emmc_rst {
+		power-source = <3300>;
+	};
+};
+
+&snd_rzg2l {
+	status = "disabled";
+};
+
+&du {
+	status = "disabled";
+};
+
+&dsi {
+	status = "disabled";
+};
+
+&ssi0 {
+	status = "disabled";
+};
+
+&ssi1 {
+	status = "disabled";
+};
+
+&gpt4 {
+	status = "disabled";
+};
+
+&canfd {
+	status = "disabled";
+};
+
+&spi1 {
+	status = "disabled";
+};

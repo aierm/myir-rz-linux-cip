@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Device Tree Source for the MYiR MYS-RZG2L microSD board variant
+ */
+
+/dts-v1/;
+#include "mys-rzg2l-smarc-base.dtsi"
+
+/ {
+	model = "MYiR MYS-RZG2L (microSD)";
+	compatible = "myir,mys-rzg2l-sdcard", "renesas,r9a07g044l2",
+		     "renesas,r9a07g044";
+};
+
+/*
+ * The carrier keeps SDHI1 at 3.3V and uses a GPIO-based card-detect line.
+ */
+&sdhi1 {
+	pinctrl-0 = <&sdhi1_pins>;
+	/delete-property/ pinctrl-1;
+	pinctrl-names = "default";
+	vmmc-supply = <&reg_3p3v>;
+	vqmmc-supply = <&reg_3p3v>;
+	cd-gpios = <&pinctrl RZG2L_GPIO(19, 0) GPIO_ACTIVE_LOW>;
+	bus-width = <4>;
+	disable-wp;
+	/delete-property/ sd-uhs-sdr50;
+	/delete-property/ sd-uhs-sdr104;
+	status = "okay";
+};

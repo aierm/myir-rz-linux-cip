@@ -33,8 +33,6 @@
 /* Maximum DCS buffer size in external memory */
 #define RZG2L_DCS_BUF_SIZE			128
 
-int dsi_div_ab;
-
 struct rzg2l_mipi_dsi {
 	struct device *dev;
 	void __iomem *mmio;

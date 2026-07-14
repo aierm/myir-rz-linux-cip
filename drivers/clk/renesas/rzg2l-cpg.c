@@ -82,6 +82,15 @@
 #define PLL5_INTIN_DEF		125
 #define PLL5_FRACIN_DEF		0
 
+/*
+ * The CPG code always computes PLL5/DSI divider state, even on builds that
+ * intentionally omit the RZ/G2L display pipeline. Keep a default software
+ * value here so headless builds link cleanly; the DSI driver overrides it
+ * at runtime when that pipeline is enabled.
+ */
+int dsi_div_ab = 1;
+EXPORT_SYMBOL_GPL(dsi_div_ab);
+
 /**
  * struct clk_hw_data - clock hardware data
  * @hw: clock hw

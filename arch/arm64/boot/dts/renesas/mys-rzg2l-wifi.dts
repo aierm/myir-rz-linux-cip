@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Device Tree Source for the MYiR MYS-RZG2L WiFi board variant
+ */
+
+/dts-v1/;
+#include "mys-rzg2l-smarc-base.dtsi"
+
+/ {
+	model = "MYiR MYS-RZG2L (WiFi)";
+	compatible = "myir,mys-rzg2l-wifi", "renesas,r9a07g044l2",
+		     "renesas,r9a07g044";
+};
+
+/*
+ * The onboard WiFi module is wired as a fixed 3.3V SDIO device.
+ */
+&sdhi1 {
+	pinctrl-0 = <&sdhi1_pins>;
+	/delete-property/ pinctrl-1;
+	pinctrl-names = "default";
+	vmmc-supply = <&wifi_reg_on>;
+	vqmmc-supply = <&reg_3p3v>;
+	bus-width = <4>;
+	disable-wp;
+	no-mmc;
+	no-sd;
+	non-removable;
+	no-1-8-v;
+	/delete-property/ sd-uhs-sdr50;
+	/delete-property/ sd-uhs-sdr104;
+	status = "okay";
+};
